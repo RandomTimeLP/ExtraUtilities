@@ -1,9 +1,0 @@
-README.md
-setup.py
-ExtraUtils/RateLimit.py
-ExtraUtils/__init__.py
-extrautilitys.egg-info/PKG-INFO
-extrautilitys.egg-info/SOURCES.txt
-extrautilitys.egg-info/dependency_links.txt
-extrautilitys.egg-info/requires.txt
-extrautilitys.egg-info/top_level.txt

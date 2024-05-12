@@ -1,7 +1,7 @@
 from setuptools import setup, find_packages
 
 setup(
-    name='extrautilitys',
+    name='extrautilities',
     version='0.1',
     packages=find_packages(),
     description='This package provides a few extra utilities for Python, like a "RateLimiter" class.',
