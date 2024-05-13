@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 setup(
     name='extrautilities',
-    version='0.1',
+    version='0.2',
     packages=find_packages(),
     description='This package provides a few extra utilities for Python, like a "RateLimiter" class.',
     long_description=open('README.md').read(),
@@ -23,5 +23,5 @@ setup(
         'Programming Language :: Python :: 3.12',
     ],
     keywords='RateLimit',
-    install_requires=["extradecorators"],
+    install_requires=["extradecorators", "cryptography"],
 )
