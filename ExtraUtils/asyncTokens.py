@@ -6,7 +6,7 @@ from cryptography.hazmat.primitives import hashes
 from cryptography.hazmat.primitives.serialization import load_pem_public_key
 
 
-def generiere_rsa_schluesselpaar():
+def gen_keypair():
     priv_key = rsa.generate_private_key(
         public_exponent=65537,
         key_size=2048,
