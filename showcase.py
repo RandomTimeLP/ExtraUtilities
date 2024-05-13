@@ -26,3 +26,8 @@ for i in range(20):
 #  File "E:\Developement\RTS-Modules\ExtraUtils\ExtraUtils\RateLimit.py", line 30, in increment
 #    raise RateLimited()
 #ExtraUtils.RateLimit.RateLimited: Rate limit reached
+
+
+import ExtraUtils.asyncTokens as astok
+
+astok.

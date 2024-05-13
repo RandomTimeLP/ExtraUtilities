@@ -14,7 +14,7 @@ def gen_keypair():
     return (priv_key, pub_key)
 
 # Nachricht mit dem öffentlichen Schlüssel verschlüsseln
-def verschluesseln(nachricht, pub_key):
+def encrypt(nachricht, pub_key):
     return pub_key.encrypt(
         nachricht.encode(),
         padding.OAEP(
