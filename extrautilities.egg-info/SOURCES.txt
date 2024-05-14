@@ -3,6 +3,7 @@ setup.py
 ExtraUtils/RateLimit.py
 ExtraUtils/__init__.py
 ExtraUtils/asyncTokens.py
+ExtraUtils/timeBasedToken.py
 extrautilities.egg-info/PKG-INFO
 extrautilities.egg-info/SOURCES.txt
 extrautilities.egg-info/dependency_links.txt
