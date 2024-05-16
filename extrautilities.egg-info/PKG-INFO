@@ -1,6 +1,6 @@
 Metadata-Version: 2.1
 Name: extrautilities
-Version: 0.8
+Version: 0.9
 Summary: This package provides a few extra utilities for Python, like a "RateLimiter" class.
 Home-page: https://github.com/RandomTimeLP/ExtraUtils
 Author: RandomTimeTV
@@ -22,7 +22,7 @@ Description-Content-Type: text/markdown
 # ExtraUtils
 will provide a bunch of small functionalities to speedup development.
 
-(In active development, so if you have any suggestions, to make other developers' life easier, feel free to submit them.)
+(In active development, so if you have any suggestions, to make other developers life easier, feel free to submit them.)
 
 # Latest addition
 
@@ -63,7 +63,7 @@ rate_limit = RateLimiter(10,15,5,1,True)
 # upperCap (15) -> the highest value the trigger counter will go
 # decay_rate (5) -> the amount in triggers to be decremented each decay cycle
 # decay_time (1) -> the time in seconds between each decay cycle
-# extreme_case (True) -> if a exeption should be raised (if True) or just rate_limit.hit set to True (if False)
+# extreme_case (True) -> if an exeption should be raised (if True) or just rate_limit.hit set to True (if False)
 
 def rate_limit_test(i:int):
     rate_limit.increment()

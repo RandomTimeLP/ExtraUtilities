@@ -7,10 +7,15 @@ from Crypto.Random import get_random_bytes
 from Crypto.Hash import SHA256
 
 class TimeBasedToken:
-    def __init__(self, primary_toke, secondary_token):
+    def __init__(self, primary_toke:str, secondary_token:str):
+        '''keep the order of the tokens in mind while setting up the other communication endpoints.'''
         self.__enckey = None
-        self.primary = primary_toke
-        self.special = secondary_token
+        if not primary_toke or not secondary_token:
+            raise ValueError("Token can't be empty")
+        if not isinstance(primary_toke, str) or not isinstance(secondary_token, str):
+            raise ValueError("Token must be string")
+        self.__primary = primary_toke
+        self.__special = secondary_token
         self.__iv = None
         self.regenerate()
         self.__geniv()
@@ -21,7 +26,7 @@ class TimeBasedToken:
         timestamp = int(time.time() // 10 * 10)
 
         # Kombiniere Token und Zeitstempel und erstelle einen SHA-256 Hash
-        combined = f"{self.special}{timestamp}".encode()
+        combined = f"{self.__special}{timestamp}".encode()
         hash_result = hashlib.sha256(combined).hexdigest()
 
         # Erstelle eine Bitmap aus den ersten 8 Zeichen des Hashes
@@ -34,18 +39,18 @@ class TimeBasedToken:
         print(order)
 
         # Extrahiere und sortiere Zeichen basierend auf der Bitmap und der Reihenfolge
-        extracted_chars = ''.join([self.special[i] for i, bit in enumerate(bitmap) if bit == '1'])
+        extracted_chars = ''.join([self.__special[i] for i, bit in enumerate(bitmap) if bit == '1'])
         sorted_chars = ''.join([extracted_chars[i] for i in order if i < len(extracted_chars)])
 
-        # Kombiniere den self.primary mit den sortierten Zeichen und erstelle einen finalen Hash
-        final_combined = f"{self.primary}{sorted_chars}".encode()
+        # Kombiniere den self.__primary mit den sortierten Zeichen und erstelle einen finalen Hash
+        final_combined = f"{self.__primary}{sorted_chars}".encode()
         final_hash = hashlib.sha256(final_combined).hexdigest()
         self.__enckey = final_hash
         return str(final_hash)
     
     def __geniv(self):
         # Kombiniere die Token
-        combined_tokens = self.primary + self.special
+        combined_tokens = self.__primary + self.__special
 
         # Erstelle einen SHA-256 Hash des kombinierten Strings
         hash_obj = SHA256.new(combined_tokens.encode())
@@ -89,7 +94,7 @@ class TimeBasedToken:
         return decrypted_bytes.decode()
     
     def __str__(self):
-        return self.key
+        return self.__enckey
 
 
 
