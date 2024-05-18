@@ -31,12 +31,12 @@ class TimeBasedToken:
 
         # Erstelle eine Bitmap aus den ersten 8 Zeichen des Hashes
         bitmap = bin(int(hash_result[:8], 16))[2:].zfill(32)
-        print(bitmap)
+
 
         # Erstelle eine "zufällige" Reihenfolge aus den nächsten 8 Zeichen
         order_seed = int(hash_result[8:16], 16)
         order = sorted(range(32), key=lambda x: (order_seed >> (x % 8)) & 1)
-        print(order)
+
 
         # Extrahiere und sortiere Zeichen basierend auf der Bitmap und der Reihenfolge
         extracted_chars = ''.join([self.__special[i] for i, bit in enumerate(bitmap) if bit == '1'])
@@ -75,12 +75,15 @@ class TimeBasedToken:
         
         return encrypted_data
 
-    def decrypt(self, encrypted_data):
+    def decrypt(self, encrypted):
         # Konvertiere den Hex-Schlüssel in Bytes
         key_bytes = bytes.fromhex(self.__enckey)
-        
+        if not encrypted:
+            raise ValueError("Encrypted data can't be empty")
+        if not isinstance(encrypted, str):
+            raise ValueError("Encrypted data must be string")
         # Dekodiere die Daten aus Base64
-        encrypted_bytes = base64.b64decode(encrypted_data)
+        encrypted_bytes = base64.b64decode(encrypted)
         
 
         encrypted_text = encrypted_bytes[AES.block_size:]
