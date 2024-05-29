@@ -27,10 +27,25 @@ def encrypt(nachricht, pub_key):
     return message
 
 def serial(key):
-    return key.public_bytes(
-        encoding=serialization.Encoding.PEM,
-        format=serialization.PublicFormat.SubjectPublicKeyInfo
-    ).decode('utf-8')
+    try:
+        return key.public_bytes(
+            encoding=serialization.Encoding.PEM,
+            format=serialization.PublicFormat.SubjectPublicKeyInfo
+        ).decode('utf-8')
+    except AttributeError:
+        return key.private_bytes(
+            encoding=serialization.Encoding.PEM,
+            format=serialization.PrivateFormat.TraditionalOpenSSL,
+            encryption_algorithm=serialization.NoEncryption()
+        ).decode('utf-8')
+
+def load_private(key):
+    priv_key = serialization.load_pem_private_key(
+        key.encode('utf-8'),
+        password=None,
+        backend=default_backend()
+    )
+    return priv_key
 
 def load(key):
     pub_key = load_pem_public_key(

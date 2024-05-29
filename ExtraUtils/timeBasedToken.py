@@ -16,82 +16,46 @@ class TimeBasedToken:
             raise ValueError("Token must be string")
         self.__primary = primary_toke
         self.__special = secondary_token
-        self.__iv = None
         self.regenerate()
-        self.__geniv()
 
 
     def regenerate(self):
-        # Berechne den gerundeten Unix-Zeitstempel
         timestamp = int(time.time() // 10 * 10)
-
-        # Kombiniere Token und Zeitstempel und erstelle einen SHA-256 Hash
         combined = f"{self.__special}{timestamp}".encode()
         hash_result = hashlib.sha256(combined).hexdigest()
-
-        # Erstelle eine Bitmap aus den ersten 8 Zeichen des Hashes
         bitmap = bin(int(hash_result[:8], 16))[2:].zfill(32)
-
-
-        # Erstelle eine "zufällige" Reihenfolge aus den nächsten 8 Zeichen
         order_seed = int(hash_result[8:16], 16)
         order = sorted(range(32), key=lambda x: (order_seed >> (x % 8)) & 1)
-
-
-        # Extrahiere und sortiere Zeichen basierend auf der Bitmap und der Reihenfolge
         extracted_chars = ''.join([self.__special[i] for i, bit in enumerate(bitmap) if bit == '1'])
         sorted_chars = ''.join([extracted_chars[i] for i in order if i < len(extracted_chars)])
-
-        # Kombiniere den self.__primary mit den sortierten Zeichen und erstelle einen finalen Hash
         final_combined = f"{self.__primary}{sorted_chars}".encode()
         final_hash = hashlib.sha256(final_combined).hexdigest()
         self.__enckey = final_hash
         return str(final_hash)
     
-    def __geniv(self):
-        # Kombiniere die Token
-        combined_tokens = self.__primary + self.__special
-
-        # Erstelle einen SHA-256 Hash des kombinierten Strings
-        hash_obj = SHA256.new(combined_tokens.encode())
-
-        # Extrahiere die ersten 16 Bytes des Hashes für den IV
-        iv = hash_obj.digest()[:16]
-
-        self.__iv = iv
-    
     def encrypt(self, plaintext):
-        # Konvertiere den Hex-Schlüssel in Bytes
+        # Generiere einen zufälligen IV für jede Verschlüsselung
+        iv = get_random_bytes(AES.block_size)
         key_bytes = bytes.fromhex(self.__enckey)
-        
-        # Initialisiere den AES Cipher im CBC Modus
-        cipher = AES.new(key_bytes, AES.MODE_CBC, self.__iv)
-        
-        # Verschlüssle den Klartext mit Padding
+
+        cipher = AES.new(key_bytes, AES.MODE_CBC, iv)
         encrypted_bytes = cipher.encrypt(pad(plaintext.encode(), AES.block_size))
-        
-        # Kombiniere IV und verschlüsselten Text, kodiere beides in Base64 für einfache Handhabung
-        encrypted_data = base64.b64encode(self.__iv + encrypted_bytes).decode()
-        
+        encrypted_data = base64.b64encode(iv + encrypted_bytes).decode()
         return encrypted_data
 
     def decrypt(self, encrypted):
         # Konvertiere den Hex-Schlüssel in Bytes
         key_bytes = bytes.fromhex(self.__enckey)
-        if not encrypted:
-            raise ValueError("Encrypted data can't be empty")
         if not isinstance(encrypted, str):
             raise ValueError("Encrypted data must be string")
         # Dekodiere die Daten aus Base64
         encrypted_bytes = base64.b64decode(encrypted)
         
 
+        iv = encrypted_bytes[:AES.block_size]
         encrypted_text = encrypted_bytes[AES.block_size:]
-        
-        # Initialisiere den AES Cipher im CBC Modus
-        cipher = AES.new(key_bytes, AES.MODE_CBC, self.__iv)
-        
-        # Entschlüssle den Text und entferne das Padding
+
+        cipher = AES.new(key_bytes, AES.MODE_CBC, iv)
         decrypted_bytes = unpad(cipher.decrypt(encrypted_text), AES.block_size)
         
         return decrypted_bytes.decode()
