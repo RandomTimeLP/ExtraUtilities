@@ -2,6 +2,7 @@ README.md
 setup.py
 ExtraUtils/RateLimit.py
 ExtraUtils/__init__.py
+ExtraUtils/asyncThreads.py
 ExtraUtils/asyncTokens.py
 ExtraUtils/callbackVoid.py
 ExtraUtils/getFileContent.py
