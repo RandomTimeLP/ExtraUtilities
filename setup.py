@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 setup(
     name='extrautilities',
-    version='1.6',
+    version='1.7',
     packages=find_packages(),
     description='This package provides a few extra utilities for Python, like a "RateLimiter" class.',
     long_description=open('README.md').read(),

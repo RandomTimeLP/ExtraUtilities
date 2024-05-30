@@ -9,7 +9,8 @@ class async_thread:
         self.loop = asyncio.new_event_loop()
         asyncio.set_event_loop(self.loop)
         self.thread = threading.Thread(target=self.__run)
-        self.thread.start()
+        
+        
 
     def __run(self):
         self.loop.run_until_complete(self.target(*self.args, **self.kwargs))
@@ -19,6 +20,9 @@ class async_thread:
     
     def deamon(self):
         self.thread.daemon = True
+
+    def start(self):
+        self.thread.start()
 
     def close(self):
         self.loop.stop()
