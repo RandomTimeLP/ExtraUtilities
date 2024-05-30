@@ -54,6 +54,32 @@ def load(key):
     )
     return pub_key
 
+def sign(message, priv_key):
+    signature = priv_key.sign(
+        message.encode(),
+        padding.PSS(
+            mgf=padding.MGF1(hashes.SHA256()),
+            salt_length=padding.PSS.MAX_LENGTH
+        ),
+        hashes.SHA256()
+    )
+    return signature
+
+def verify(message, signature, pub_key):
+    try:
+        pub_key.verify(
+            signature,
+            message.encode(),
+            padding.PSS(
+                mgf=padding.MGF1(hashes.SHA256()),
+                salt_length=padding.PSS.MAX_LENGTH
+            ),
+            hashes.SHA256()
+        )
+        return True
+    except:
+        return False
+
 def decrypt(message, priv_key):
     decrypted_message = priv_key.decrypt(
         message,
