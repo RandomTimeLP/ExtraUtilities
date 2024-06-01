@@ -97,7 +97,7 @@ def decrypt(message, priv_key):
             label=None
         )
     )
-    return decrypted_message.decode()
+    return decrypted_message
 
 # Example:
 # priv_key, pub_key = generiere_rsa_schluesselpaar()
