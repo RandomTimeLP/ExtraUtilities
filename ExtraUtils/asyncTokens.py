@@ -55,8 +55,10 @@ def load(key):
     return pub_key
 
 def sign(message, priv_key):
+    if isinstance(nachricht, str):
+        nachricht = nachricht.encode()
     signature = priv_key.sign(
-        message.encode(),
+        message,
         padding.PSS(
             mgf=padding.MGF1(hashes.SHA256()),
             salt_length=padding.PSS.MAX_LENGTH
@@ -66,10 +68,14 @@ def sign(message, priv_key):
     return signature
 
 def verify(message, signature, pub_key):
+    if isinstance(signature, str):
+        signature = signature.encode()
+    if isinstance(message, str):
+        message = message.encode()
     try:
         pub_key.verify(
             signature,
-            message.encode(),
+            message,
             padding.PSS(
                 mgf=padding.MGF1(hashes.SHA256()),
                 salt_length=padding.PSS.MAX_LENGTH
@@ -81,6 +87,8 @@ def verify(message, signature, pub_key):
         return False
 
 def decrypt(message, priv_key):
+    if isinstance(message, str):
+        message = message.encode()
     decrypted_message = priv_key.decrypt(
         message,
         padding.OAEP(
