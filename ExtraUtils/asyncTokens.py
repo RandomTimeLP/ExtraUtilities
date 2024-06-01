@@ -55,8 +55,8 @@ def load(key):
     return pub_key
 
 def sign(message, priv_key):
-    if isinstance(nachricht, str):
-        nachricht = nachricht.encode()
+    if isinstance(message, str):
+        message = message.encode()
     signature = priv_key.sign(
         message,
         padding.PSS(
