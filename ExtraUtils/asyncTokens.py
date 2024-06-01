@@ -48,7 +48,7 @@ def load_private(key):
     return priv_key
 
 def load(key):
-    pub_key = load_pem_public_key(
+    pub_key = serialization.load_pem_public_key(
         key.encode('utf-8'),
         backend=default_backend()
     )
