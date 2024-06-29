@@ -14,7 +14,7 @@ def validate_dict(format:dict, data:dict)->bool:
                     return False
             
         if isinstance(rule.get("__value"), list) and data[key] not in rule.get("__value"):
-            print(f"❌  Invalid value for {key} expected to be a value contained in {rule.get("__value")}. @channel_points.py(validate_dict)")
+            print(f"❌  Invalid value for {key} expected to be a value contained in {rule.get('__value')}. @channel_points.py(validate_dict)")
             return False
         
         if rule.get("__range") and (isinstance(data[key], int) or isinstance(data[key], float)):

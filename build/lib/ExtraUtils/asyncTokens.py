@@ -67,14 +67,14 @@ def sign(message, priv_key):
     )
     return signature
 
-def verify(message, signature, pub_key):
-    if isinstance(signature, str):
-        signature = signature.encode()
+def verify(message, expected_cert, pub_key):
+    if isinstance(expected_cert, str):
+        expected_cert = expected_cert.encode()
     if isinstance(message, str):
         message = message.encode()
     try:
         pub_key.verify(
-            signature,
+            expected_cert,
             message,
             padding.PSS(
                 mgf=padding.MGF1(hashes.SHA256()),
@@ -83,7 +83,7 @@ def verify(message, signature, pub_key):
             hashes.SHA256()
         )
         return True
-    except:
+    except Exception as e:
         return False
 
 def decrypt(message, priv_key):

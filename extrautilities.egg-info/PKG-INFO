@@ -1,6 +1,6 @@
 Metadata-Version: 2.1
 Name: extrautilities
-Version: 0.2.2
+Version: 0.2.3
 Summary: This package provides a few extra utilities for Python, like a "RateLimiter" class.
 Home-page: https://github.com/RandomTimeLP/ExtraUtils
 Author: RandomTimeTV
